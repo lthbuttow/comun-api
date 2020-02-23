@@ -1,4 +1,14 @@
+import jwt from 'jsonwebtoken';
+
 import UserSchema from '../models/User';
+
+import authConfig from '../../config/auth.json';
+
+function generateToken(params = {}) {
+  return jwt.sign(params, authConfig.secret, {
+    expiresIn: 86400,
+  });
+}
 
 class UserController {
   async index(req, res) {
@@ -31,17 +41,26 @@ class UserController {
   }
 
   async store(req, res) {
-    const { email } = req.body;
+    const { email, password } = req.body;
+
     try {
+      if (password <= 5)
+        return res
+          .status(400)
+          .send({ error: 'Password should contain more than 5 chars' });
+
       if (await UserSchema.findOne({ email }))
         return res.status(400).send({ error: 'User already exists' });
 
       const user = await UserSchema.create(req.body);
 
-      user.password = undefined;
+      const { name, admin } = user;
 
       return res.send({
-        user,
+        name,
+        email,
+        admin,
+        token: generateToken({ id: user.id }),
       });
     } catch (error) {
       return res.status(400).send({ error: 'Insert failed' });
@@ -78,7 +97,7 @@ class UserController {
 
       return res.status(200).send({ msg: 'Success' });
     } catch (error) {
-      return res.status(400).send({ error: 'Registration failed' });
+      return res.status(400).send({ error: 'Operation Failed' });
     }
   }
 }

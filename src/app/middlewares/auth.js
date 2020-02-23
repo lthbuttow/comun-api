@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import authConfig from '../../config/auth.json';
 
+// eslint-disable-next-line consistent-return
 export default (req, res, next) => {
   const authHeader = req.headers.authorization;
 
