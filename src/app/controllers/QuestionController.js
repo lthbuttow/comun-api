@@ -4,7 +4,7 @@ class QuestionController {
   async index(req, res) {
     try {
       const question = await QuestionSchema.find();
-      if (!question)
+      if (!question[0])
         return res.status(400).send({ error: 'No questions found' });
 
       return res.send({
@@ -21,7 +21,7 @@ class QuestionController {
     try {
       const question = await QuestionSchema.findOne({ _id: id });
 
-      if (!question)
+      if (!question[0])
         return res.status(400).send({ error: 'Question not found' });
 
       return res.send({
@@ -38,7 +38,7 @@ class QuestionController {
       if (message.length <= 10) {
         return res
           .status(400)
-          .send({ error: 'Message should contain more than 5 chars' });
+          .send({ error: 'Message should contain more than 10 chars' });
       }
 
       const question = await QuestionSchema.create(req.body);

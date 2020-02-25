@@ -14,7 +14,7 @@ class UserController {
   async index(req, res) {
     try {
       const user = await UserSchema.find();
-      if (!user) return res.status(400).send({ error: 'No users found' });
+      if (!user[0]) return res.status(400).send({ error: 'No users found' });
 
       return res.send({
         user,
@@ -30,7 +30,7 @@ class UserController {
     try {
       const user = await UserSchema.findOne({ _id: id });
 
-      if (!user) return res.status(400).send({ error: 'User not found' });
+      if (!user[0]) return res.status(400).send({ error: 'User not found' });
 
       return res.send({
         user,
