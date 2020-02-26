@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import authConfig from '../../config/auth.json';
+import authConfig from '../../config/auth';
 
 // eslint-disable-next-line consistent-return
 export default (req, res, next) => {
