@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 
-import authConfig from '../../config/auth.json';
+import authConfig from '../../config/auth';
 
 import User from '../models/User';
 
